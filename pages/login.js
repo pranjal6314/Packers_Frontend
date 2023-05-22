@@ -1,11 +1,78 @@
-import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
-const login = () => {
+import { set } from "mongoose";
+import Image from "next/image";
+import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/router";
+const Login = () => {
+  const router = useRouter();
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const handleChange = (e) => {
+    if (e.target.name === "email") setEmail(e.target.value);
+    else setPassword(e.target.value);
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const frombody = { email, password };
+    console.log(frombody);
+    let res = await fetch("http://localhost:3000/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(frombody),
+    });
+    let responce = await res.json();
+    console.log(responce);
+
+    setEmail("");
+    setPassword("");
+    if (responce.success) {
+      localStorage.setItem("token", responce.token);
+      toast.success("you are successfully logged in!", {
+        position: "bottom-left",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      setTimeout(() => {
+        router.push("/home");
+      }, 2000);
+    } else {
+      toast.warn("Invaild Crendential!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
   return (
     <>
       <section className="bg-sky-50 dark:bg-sky-300">
+        <ToastContainer
+          position="bottom-left"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <a
             href="/"
@@ -18,7 +85,7 @@ const login = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-sky-900 md:text-2xl dark:text-white">
                 Sign in to your account
               </h1>
-              <form className="space-y-4 md:space-y-6" action="#">
+              <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
                 <div>
                   <label
                     for="email"
@@ -27,12 +94,14 @@ const login = () => {
                     Your email
                   </label>
                   <input
+                    onChange={handleChange}
                     type="email"
                     name="email"
                     id="email"
+                    value={email}
                     className="bg-sky-50 border border-sky-300 text-sky-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-sky-700 dark:border-sky-600 dark:placeholder-sky-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="name@company.com"
-                    required=""
+                    required
                   />
                 </div>
                 <div>
@@ -43,12 +112,14 @@ const login = () => {
                     Password
                   </label>
                   <input
+                    onChange={handleChange}
                     type="password"
                     name="password"
                     id="password"
+                    value={password}
                     placeholder="••••••••"
                     className="bg-sky-50 border border-sky-300 text-sky-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-sky-700 dark:border-sky-600 dark:placeholder-sky-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    required=""
+                    required
                   />
                 </div>
                 <div className="flex items-center justify-between">
@@ -104,4 +175,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;
