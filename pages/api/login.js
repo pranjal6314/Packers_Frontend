@@ -13,7 +13,6 @@ const handler = async (req, res) => {
     } else {
       res.status(200).json({ success: false, error: "no user found" });
     }
-    // var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
     if (user) {
       if (

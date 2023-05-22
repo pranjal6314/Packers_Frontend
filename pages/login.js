@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 
 import { set } from "mongoose";
@@ -7,7 +6,7 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
-const Login = () => {
+const login = () => {
   const router = useRouter();
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -18,7 +17,6 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const frombody = { email, password };
-    console.log(frombody);
     let res = await fetch("http://localhost:3000/api/login", {
       method: "POST",
       headers: {
@@ -44,7 +42,7 @@ const Login = () => {
         theme: "colored",
       });
       setTimeout(() => {
-        router.push("/home");
+        router.push("/");
       }, 2000);
     } else {
       toast.warn("Invaild Crendential!", {
@@ -74,20 +72,12 @@ const Login = () => {
           pauseOnHover
           theme="colored"
         />
-
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-          <a
-            href="/"
-            className="flex items-center mb-6 text-2xl font-semibold text-sky-900 dark:text-white"
-          >
-            <Image height={40} width={200} src="/main-logo.png" alt="" />
-          </a>
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-sky-800 dark:border-sky-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-sky-900 md:text-2xl dark:text-white">
                 Sign in to your account
               </h1>
-
               <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
                 <div>
                   <label
@@ -97,7 +87,6 @@ const Login = () => {
                     Your email
                   </label>
                   <input
-
                     onChange={handleChange}
                     type="email"
                     name="email"
@@ -106,7 +95,6 @@ const Login = () => {
                     className="bg-sky-50 border border-sky-300 text-sky-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-sky-700 dark:border-sky-600 dark:placeholder-sky-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="name@company.com"
                     required
-
                   />
                 </div>
                 <div>
@@ -117,7 +105,6 @@ const Login = () => {
                     Password
                   </label>
                   <input
-
                     onChange={handleChange}
                     type="password"
                     name="password"
@@ -126,11 +113,9 @@ const Login = () => {
                     placeholder="••••••••"
                     className="bg-sky-50 border border-sky-300 text-sky-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-sky-700 dark:border-sky-600 dark:placeholder-sky-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     required
-
                   />
                 </div>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-start"></div>
                   <Link href="/forgot" legacyBehavior>
                     <a
                       href="#"
@@ -164,5 +149,4 @@ const Login = () => {
   );
 };
 
-export default Login;
-
+export default login;
