@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 
 import { set } from "mongoose";
@@ -73,6 +74,7 @@ const Login = () => {
           pauseOnHover
           theme="colored"
         />
+
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <a
             href="/"
@@ -85,6 +87,7 @@ const Login = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-sky-900 md:text-2xl dark:text-white">
                 Sign in to your account
               </h1>
+
               <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
                 <div>
                   <label
@@ -94,6 +97,7 @@ const Login = () => {
                     Your email
                   </label>
                   <input
+
                     onChange={handleChange}
                     type="email"
                     name="email"
@@ -102,6 +106,7 @@ const Login = () => {
                     className="bg-sky-50 border border-sky-300 text-sky-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-sky-700 dark:border-sky-600 dark:placeholder-sky-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="name@company.com"
                     required
+
                   />
                 </div>
                 <div>
@@ -112,6 +117,7 @@ const Login = () => {
                     Password
                   </label>
                   <input
+
                     onChange={handleChange}
                     type="password"
                     name="password"
@@ -120,6 +126,7 @@ const Login = () => {
                     placeholder="••••••••"
                     className="bg-sky-50 border border-sky-300 text-sky-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-sky-700 dark:border-sky-600 dark:placeholder-sky-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     required
+
                   />
                 </div>
                 <div className="flex items-center justify-between">
@@ -176,3 +183,4 @@ const Login = () => {
 };
 
 export default Login;
+
