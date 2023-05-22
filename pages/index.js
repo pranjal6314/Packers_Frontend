@@ -12,7 +12,6 @@ export default function Home() {
       <Head>
         <title>Packers</title>
         <meta name="description" content="Shop Smart. Shop Next" />
-        {/* <link rel="icon" href="/logo2.png" /> */}
       </Head>
       <Login />
     </>

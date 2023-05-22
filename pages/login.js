@@ -123,25 +123,7 @@ const Login = () => {
                   />
                 </div>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-start">
-                    <div className="flex items-center h-5">
-                      <input
-                        id="remember"
-                        aria-describedby="remember"
-                        type="checkbox"
-                        className="w-4 h-4 border border-sky-300 rounded bg-sky-50 focus:ring-3 focus:ring-primary-300 dark:bg-sky-700 dark:border-sky-600 dark:focus:ring-primary-600 dark:ring-offset-sky-800"
-                        required=""
-                      />
-                    </div>
-                    <div className="ml-3 text-sm">
-                      <label
-                        for="remember"
-                        className="text-sky-500 dark:text-sky-300"
-                      >
-                        Remember me
-                      </label>
-                    </div>
-                  </div>
+                  <div className="flex items-start"></div>
                   <Link href="/forgot" legacyBehavior>
                     <a
                       href="#"
