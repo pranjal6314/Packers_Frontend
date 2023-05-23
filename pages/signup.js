@@ -1,12 +1,19 @@
 import { set } from "mongoose";
 import Image from "next/image";
-import React, { useState } from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const signup = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const router = useRouter();
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      router.push("/home");
+    }
+  }, []);
   const handleChange = (e) => {
     if (e.target.name === "name") setName(e.target.value);
     else if (e.target.name === "email") setEmail(e.target.value);
@@ -67,7 +74,7 @@ const signup = () => {
               >
                 <div>
                   <label
-                    for="name"
+                    htmlFor="name"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Your Name
@@ -84,7 +91,7 @@ const signup = () => {
                 </div>
                 <div>
                   <label
-                    for="email"
+                    htmlFor="email"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Your email
@@ -101,7 +108,7 @@ const signup = () => {
                 </div>
                 <div>
                   <label
-                    for="password"
+                    htmlFor="password"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Password

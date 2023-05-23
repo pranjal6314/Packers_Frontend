@@ -1,6 +1,13 @@
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
 
 const forgot = () => {
+  const router = useRouter();
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      router.push("/home");
+    }
+  }, []);
   return (
     <>
       <section className="bg-gray-50 dark:bg-gray-900">

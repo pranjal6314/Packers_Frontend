@@ -19,7 +19,7 @@ const Navbar = ({ user, logout }) => {
     <>
       <div className="text-black body-font bg-sky-100 ">
         <div className="container mx-auto flex flex-wrap p-2 flex-col md:flex-row items-center">
-          <Link href="/" legacyBehavior>
+          <Link href="/home" legacyBehavior>
             <a className="flex title-font font-medium items-center text-gray-900  md:mb-0">
               <Image height={40} width={200} src="/main-logo.png" alt="" />
             </a>

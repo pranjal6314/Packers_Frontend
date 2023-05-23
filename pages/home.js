@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import React from "react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Footer from "@/components/Footer";
 const home = () => {
   const router = useRouter();
   const [user, setUser] = useState({ value: null });
@@ -23,6 +24,7 @@ const home = () => {
   return (
     <>
       <Navbar user={user} logout={logout} key={key} />
+      <Footer />
     </>
   );
 };

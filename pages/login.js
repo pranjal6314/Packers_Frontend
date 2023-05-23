@@ -2,14 +2,19 @@ import Link from "next/link";
 
 import { set } from "mongoose";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";
 const login = () => {
-  const router = useRouter();
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const router = useRouter();
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      router.push("/home");
+    }
+  }, []);
   const handleChange = (e) => {
     if (e.target.name === "email") setEmail(e.target.value);
     else setPassword(e.target.value);
@@ -42,7 +47,7 @@ const login = () => {
         theme: "colored",
       });
       setTimeout(() => {
-        router.push("/");
+        router.push("/home");
       }, 2000);
     } else {
       toast.warn("Invaild Crendential!", {
@@ -81,7 +86,7 @@ const login = () => {
               <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
                 <div>
                   <label
-                    for="email"
+                    htmlFor="email"
                     className="block mb-2 text-sm font-medium text-sky-900 dark:text-white"
                   >
                     Your email
@@ -99,7 +104,7 @@ const login = () => {
                 </div>
                 <div>
                   <label
-                    for="password"
+                    htmlFor="password"
                     className="block mb-2 text-sm font-medium text-sky-900 dark:text-white"
                   >
                     Password
