@@ -21,7 +21,7 @@ const Navbar = ({ user, logout }) => {
         <div className="container mx-auto flex flex-wrap p-2 flex-col md:flex-row items-center">
           <Link href="/home" legacyBehavior>
             <a className="flex title-font font-medium items-center text-gray-900  md:mb-0">
-              <Image height={40} width={200} src="/main-logo.png" alt="" />
+              <Image height={20} width={200} src="/logo.png" alt="" />
             </a>
           </Link>
           <nav className=" md:ml-auto flex flex-wrap items-center text-base justify-center p-5 ">

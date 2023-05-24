@@ -22,7 +22,7 @@ const login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const frombody = { email, password };
-    let res = await fetch("http://localhost:3000/api/login", {
+    let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
