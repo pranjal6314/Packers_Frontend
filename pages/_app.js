@@ -8,7 +8,14 @@ import LoadingBar from "react-top-loading-bar";
 export default function App({ Component, pageProps }) {
   const [progress, setProgress] = useState(0);
   const router = useRouter();
+  // const [user, setUser] = useState({ value: null });
+  // const [key, setKey] = useState(0);
   useEffect(() => {
+    // const token = localStorage.getItem("token");
+    // if (token) {
+    //   setUser({ value: token });
+    //   setKey(Math.random());
+    // }
     router.events.on("routeChangeComplete", () => {
       setProgress(100);
     });
@@ -16,6 +23,11 @@ export default function App({ Component, pageProps }) {
       setProgress(30);
     });
   }, [router.query]);
+  // const logout = () => {
+  //   localStorage.removeItem("token");
+  //   setUser({ value: null });
+  //   setKey(Math.random());
+  // };
   return (
     <>
       <LoadingBar
@@ -24,6 +36,7 @@ export default function App({ Component, pageProps }) {
         waitingTime={400}
         onLoaderFinished={() => setProgress(0)}
       />
+      {/* <Navbar user={user} logout={logout} key={key} /> */}
       <Component {...pageProps} />
     </>
   );

@@ -29,9 +29,13 @@ const Navbar = ({ user, logout }) => {
               {" "}
               <li>Home</li>
             </Link>
-            <Link href={"/home"}>
+            <Link href={"/profile"}>
               {" "}
               <li>Profile</li>
+            </Link>
+            <Link href={"/bills"}>
+              {" "}
+              <li>Bills</li>
             </Link>
           </nav>
           <div className="pr-5 flex cart cursor-pointer ">
