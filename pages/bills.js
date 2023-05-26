@@ -71,6 +71,9 @@ const Bills = () => {
                   <th scope="col" className="px-6 py-3">
                     Action
                   </th>
+                  <th scope="col" className="px-6 py-3">
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -100,7 +103,19 @@ const Bills = () => {
                           key={item.bill_id}
                           className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                         >
-                          Edit
+                          print
+                        </Link>
+                      </td>
+                      <td className="px-6 py-4">
+                        <Link
+                          href={{
+                            pathname: "/printbill",
+                            query: { formData: JSON.stringify(item) },
+                          }}
+                          key={item.bill_id}
+                          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                        >
+                          edit
                         </Link>
                       </td>
                     </tr>
