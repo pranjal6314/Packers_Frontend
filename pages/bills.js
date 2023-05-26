@@ -8,13 +8,27 @@ const Bills = () => {
   const router = useRouter();
   const [user, setUser] = useState({ value: null });
   const [key, setKey] = useState(0);
+  const [bills, setBills] = useState([]);
   useEffect(() => {
-    console.log("useEffect");
-
+    const fetchBill = async (token) => {
+      console.log(token);
+      let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/allbills`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token: token }),
+      });
+      let res = await a.json();
+      console.log(res.allbills);
+      setBills(res.allbills);
+    };
     const token = localStorage.getItem("token");
+
     if (token) {
       setUser({ value: token });
       setKey(Math.random());
+      fetchBill(token);
     } else {
       router.push("/");
     }
@@ -35,16 +49,16 @@ const Bills = () => {
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                   <th scope="col" className="px-6 py-3">
-                    Product name
+                    Consignor Address
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Color
+                    Consignor Name
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Category
+                    Date
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Price
+                    Total
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Action
@@ -52,120 +66,32 @@ const Bills = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    Apple MacBook Pro 17"
-                  </th>
-                  <td className="px-6 py-4">Silver</td>
-                  <td className="px-6 py-4">Laptop</td>
-                  <td className="px-6 py-4">$2999</td>
-                  <td className="px-6 py-4">
-                    <a
-                      href="/"
-                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                {bills?.map((item) => {
+                  return (
+                    <tr
+                      key={item._id}
+                      className="border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
                     >
-                      Edit
-                    </a>
-                  </td>
-                </tr>
-                <tr className="border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    Microsoft Surface Pro
-                  </th>
-                  <td className="px-6 py-4">White</td>
-                  <td className="px-6 py-4">Laptop PC</td>
-                  <td className="px-6 py-4">$1999</td>
-                  <td className="px-6 py-4">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                    >
-                      Edit
-                    </a>
-                  </td>
-                </tr>
-                <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    Magic Mouse 2
-                  </th>
-                  <td className="px-6 py-4">Black</td>
-                  <td className="px-6 py-4">Accessories</td>
-                  <td className="px-6 py-4">$99</td>
-                  <td className="px-6 py-4">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                    >
-                      Edit
-                    </a>
-                  </td>
-                </tr>
-                <tr className="border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    Google Pixel Phone
-                  </th>
-                  <td className="px-6 py-4">Gray</td>
-                  <td className="px-6 py-4">Phone</td>
-                  <td className="px-6 py-4">$799</td>
-                  <td className="px-6 py-4">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                    >
-                      Edit
-                    </a>
-                  </td>
-                </tr>
-                <tr className="border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    Google Pixel Phone
-                  </th>
-                  <td className="px-6 py-4">Gray</td>
-                  <td className="px-6 py-4">Phone</td>
-                  <td className="px-6 py-4">$799</td>
-                  <td className="px-6 py-4">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                    >
-                      Edit
-                    </a>
-                  </td>
-                </tr>
-                <tr className="border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    Apple Watch 5
-                  </th>
-                  <td className="px-6 py-4">Red</td>
-                  <td className="px-6 py-4">Wearables</td>
-                  <td className="px-6 py-4">$999</td>
-                  <td className="px-6 py-4">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                    >
-                      Edit
-                    </a>
-                  </td>
-                </tr>
+                      <th
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        {item.consignorAddress}
+                      </th>
+                      <td className="px-6 py-4">{item.consignorName}</td>
+                      <td className="px-6 py-4">{item.date}</td>
+                      <td className="px-6 py-4">{item.total}</td>
+                      <td className="px-6 py-4">
+                        <a
+                          href="#"
+                          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                        >
+                          Edit
+                        </a>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

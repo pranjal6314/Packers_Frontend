@@ -19,9 +19,10 @@ const handler = async (req, res) => {
         req.body.email === user.email &&
         decryptedData === req.body.password
       ) {
-        var token = jwt.sign({ email: user.email, name: user.name }, "ourkey", {
-          expiresIn: "1h",
-        });
+        var token = jwt.sign({ email: user.email, name: user.name }, "ourkey");
+        // , {
+        //   expiresIn: "1h",
+        // }
         res.status(200).json({ token: token, success: true });
       } else {
         res.status(200).json({ success: false, error: "wrong credentials " });

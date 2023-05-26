@@ -3,17 +3,21 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Footer from "@/components/Footer";
+import jsonewebtoken from "jsonwebtoken";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const home = () => {
   const router = useRouter();
   const [user, setUser] = useState({ value: null });
   const [key, setKey] = useState(0);
+  const [email, setEmail] = useState("");
   useEffect(() => {
-    console.log("useEffect");
-
     const token = localStorage.getItem("token");
     if (token) {
       setUser({ value: token });
       setKey(Math.random());
+      // const data = jsonewebtoken.verify(token, "ourkey");
+      // setEmail(data.email);
     } else {
       router.push("/");
     }
@@ -58,6 +62,7 @@ const home = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = {
+      email: "admin@gmail.com",
       bill_id: Math.floor(Math.random() * Date.now()),
       consignorName: document.getElementById("consignorName").value,
       consignorAddress: document.getElementById("consignorAddress").value,
@@ -79,7 +84,30 @@ const home = () => {
       body: JSON.stringify(formData),
     });
     let responce = await res.json();
-    console.log(formData);
+    if (responce.success) {
+      localStorage.setItem("token", responce.token);
+      toast.success("your bill is successfully created!", {
+        position: "bottom-left",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    } else {
+      toast.warn("Try again!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
 
     // Reset form fields
     document.getElementById("consignorName").value = "";
@@ -106,7 +134,18 @@ const home = () => {
   return (
     <>
       <Navbar user={user} logout={logout} key={key} />
-
+      <ToastContainer
+        position="bottom-left"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       <form id="myForm" className="max-w-lg mx-auto p-6">
         <h2 className="text-2xl font-bold mb-4">Form</h2>
         <div className="mb-4">
