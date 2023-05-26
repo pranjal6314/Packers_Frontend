@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Bill from "@/models/Bill";
 import mongoose from "mongoose";
+import Link from "next/link";
 const Bills = () => {
   const router = useRouter();
   const [user, setUser] = useState({ value: null });
@@ -38,6 +39,13 @@ const Bills = () => {
     setUser({ value: null });
     setKey(Math.random());
   };
+  // const handleClick = async (item) => {
+  //   // const formData = await fetch("");
+  //   router.push({
+  //     pathname: "/printbill",
+  //     query: { formData: JSON.stringify(item) },
+  //   });
+  // };
   return (
     <>
       <Navbar user={user} logout={logout} key={key} />
@@ -82,12 +90,18 @@ const Bills = () => {
                       <td className="px-6 py-4">{item.date}</td>
                       <td className="px-6 py-4">{item.total}</td>
                       <td className="px-6 py-4">
-                        <a
-                          href="#"
+                        <Link
+                          // pathname: "/printbill",
+                          // pathname: `/printbill?id=${item.bill_id}`,
+                          href={{
+                            pathname: "/printbill",
+                            query: { formData: JSON.stringify(item) },
+                          }}
+                          key={item.bill_id}
                           className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                         >
                           Edit
-                        </a>
+                        </Link>
                       </td>
                     </tr>
                   );

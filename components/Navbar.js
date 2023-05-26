@@ -39,7 +39,7 @@ const Navbar = ({ user, logout }) => {
             </Link>
           </nav>
           <div className="pr-5 flex cart cursor-pointer ">
-            {user.value && (
+            {user?.value && (
               <Link href={"/"}>
                 <button
                   onClick={logout}

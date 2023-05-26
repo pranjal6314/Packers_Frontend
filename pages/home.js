@@ -10,18 +10,16 @@ const home = () => {
   const router = useRouter();
   const [user, setUser] = useState({ value: null });
   const [key, setKey] = useState(0);
-  const [email, setEmail] = useState("");
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       setUser({ value: token });
       setKey(Math.random());
-      // const data = jsonewebtoken.verify(token, "ourkey");
-      // setEmail(data.email);
     } else {
       router.push("/");
     }
   }, [router.query]);
+
   const logout = () => {
     localStorage.removeItem("token");
     setUser({ value: null });
@@ -30,10 +28,10 @@ const home = () => {
 
   const [rows, setRows] = useState([
     {
-      packageName: "",
-      numOfPackages: "",
-      description: "",
-      weight: "",
+      Package_name: "",
+      No_of_packages: "",
+      Description: "",
+      Weight: "",
       rate: "",
     },
   ]);
@@ -50,10 +48,10 @@ const home = () => {
     setRows([
       ...rows,
       {
-        packageName: "",
-        numOfPackages: "",
-        description: "",
-        weight: "",
+        Package_name: "",
+        No_of_packages: "",
+        Description: "",
+        Weight: "",
         rate: "",
       },
     ]);
@@ -85,7 +83,6 @@ const home = () => {
     });
     let responce = await res.json();
     if (responce.success) {
-      localStorage.setItem("token", responce.token);
       toast.success("your bill is successfully created!", {
         position: "bottom-left",
         autoClose: 2000,
@@ -95,6 +92,10 @@ const home = () => {
         draggable: true,
         progress: undefined,
         theme: "colored",
+      });
+      router.push({
+        pathname: "/printbill",
+        query: { formData: JSON.stringify(formData) },
       });
     } else {
       toast.warn("Try again!", {
@@ -123,10 +124,10 @@ const home = () => {
 
     setRows([
       {
-        packageName: "",
-        numOfPackages: "",
-        description: "",
-        weight: "",
+        Package_name: "",
+        No_of_packages: "",
+        Description: "",
+        Weight: "",
         rate: "",
       },
     ]);
@@ -149,7 +150,7 @@ const home = () => {
       <form id="myForm" className="max-w-lg mx-auto p-6">
         <h2 className="text-2xl font-bold mb-4">Form</h2>
         <div className="mb-4">
-          <label className="block mb-1 font-semibold" for="consignor_name">
+          <label className="block mb-1 font-semibold" htmlFor="consignor_name">
             Consignor Name
           </label>
           <input
@@ -160,7 +161,10 @@ const home = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block mb-1 font-semibold" for="consignor_address">
+          <label
+            className="block mb-1 font-semibold"
+            htmlFor="consignor_address"
+          >
             Consignor Address
           </label>
           <input
@@ -171,7 +175,7 @@ const home = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block mb-1 font-semibold" for="date">
+          <label className="block mb-1 font-semibold" htmlFor="date">
             Date
           </label>
           <input
@@ -182,7 +186,7 @@ const home = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block mb-1 font-semibold" for="from">
+          <label className="block mb-1 font-semibold" htmlFor="from">
             From
           </label>
           <input
@@ -193,7 +197,7 @@ const home = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block font-semibold mb-2" for="to">
+          <label className="block font-semibold mb-2" htmlFor="to">
             To
           </label>
           <input
@@ -204,7 +208,7 @@ const home = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block font-semibold mb-2" for="distance">
+          <label className="block font-semibold mb-2" htmlFor="distance">
             Distance
           </label>
           <input
@@ -215,7 +219,7 @@ const home = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block font-semibold mb-2" for="freightRate">
+          <label className="block font-semibold mb-2" htmlFor="freightRate">
             Freight Rate
           </label>
           <input
@@ -226,7 +230,7 @@ const home = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block font-semibold mb-2" for="cgst">
+          <label className="block font-semibold mb-2" htmlFor="cgst">
             CGST
           </label>
           <input
@@ -237,7 +241,7 @@ const home = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block font-semibold mb-2" for="sgst">
+          <label className="block font-semibold mb-2" htmlFor="sgst">
             SGST
           </label>
           <input
@@ -247,12 +251,12 @@ const home = () => {
             required
           />
         </div>
-        <div class="mb-4">
-          <label class="block font-semibold mb-2" for="total">
+        <div className="mb-4">
+          <label className="block font-semibold mb-2" htmlFor="total">
             Total
           </label>
           <input
-            class="w-full px-3 py-2 border rounded"
+            className="w-full px-3 py-2 border rounded"
             type="text"
             id="total"
             required
@@ -260,67 +264,6 @@ const home = () => {
         </div>
 
         <div id="goodsSection" className="mb-4">
-          {/* <table id="goodsTable" className="mb-4">
-            <thead>
-              <tr>
-                <th className="px-3 py-2">Package Name</th>
-                <th className="px-3 py-2">No. of Packages</th>
-                <th className="px-3 py-2">Description</th>
-                <th className="px-3 py-2">Weight</th>
-                <th className="px-3 py-2">Rate</th>
-              </tr>
-            </thead>
-            <tbody id="goodsTableBody">
-              <tr>
-                <td className="border px-3 py-2">
-                  <input
-                    type="text"
-                    name="package_name[]"
-                    className="w-full border-none"
-                  />
-                </td>
-                <td className="border px-3 py-2">
-                  <input
-                    type="number"
-                    name="no_of_packages[]"
-                    className="w-full border-none"
-                  />
-                </td>
-                <td className="border px-3 py-2">
-                  <textarea
-                    name="description[]"
-                    className="w-full border-none"
-                  ></textarea>
-                </td>
-                <td className="border px-3 py-2">
-                  <input
-                    type="text"
-                    name="weight[]"
-                    className="w-full border-none"
-                  />
-                </td>
-                <td className="border px-3 py-2">
-                  <input type="text" name="rate[]" className="w-full border-none" />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          <button
-            type="button"
-            id="addRowBtn"
-            className="bg-blue--500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Add Row
-          </button>
-        </div>
-        <div className="mt-4">
-          <button
-            type="submit"
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Submit
-          </button> */}
           <h2 className="text-xl font-semibold mb-4">Goods</h2>
           <table className="w-full mb-4">
             <thead>
@@ -339,9 +282,9 @@ const home = () => {
                     <input
                       type="text"
                       className="w-full px-2 py-1 border rounded"
-                      value={row.packageName}
+                      value={row.Package_name}
                       onChange={(e) =>
-                        handleChange(index, "packageName", e.target.value)
+                        handleChange(index, "Package_name", e.target.value)
                       }
                     />
                   </td>
@@ -349,9 +292,9 @@ const home = () => {
                     <input
                       type="text"
                       className="w-full px-2 py-1 border rounded"
-                      value={row.numOfPackages}
+                      value={row.No_of_packages}
                       onChange={(e) =>
-                        handleChange(index, "numOfPackages", e.target.value)
+                        handleChange(index, "No_of_packages", e.target.value)
                       }
                     />
                   </td>
@@ -359,9 +302,9 @@ const home = () => {
                     <input
                       type="text"
                       className="w-full px-2 py-1 border rounded"
-                      value={row.description}
+                      value={row.Description}
                       onChange={(e) =>
-                        handleChange(index, "description", e.target.value)
+                        handleChange(index, "Description", e.target.value)
                       }
                     />
                   </td>
@@ -369,9 +312,9 @@ const home = () => {
                     <input
                       type="text"
                       className="w-full px-2 py-1 border rounded"
-                      value={row.weight}
+                      value={row.Weight}
                       onChange={(e) =>
-                        handleChange(index, "weight", e.target.value)
+                        handleChange(index, "Weight", e.target.value)
                       }
                     />
                   </td>
