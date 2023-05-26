@@ -1,32 +1,28 @@
 import User from "../../models/User";
+import Bill from "../../models/Bill";
 import connectDb from "../../middleware/monooges";
 var CryptoJS = require("crypto-js");
 var jwt = require("jsonwebtoken");
 
 const handler = async (req, res) => {
   if (req.method === "POST") {
-    let user = await User.findOne({ email: req.body.email });
-    console.log(req.body.email);
-    if (user) {
-      const bytes = CryptoJS.AES.decrypt(user.password, "sec1234");
-      var decryptedData = bytes.toString(CryptoJS.enc.Utf8);
-    } else {
-      res.status(200).json({ success: false, error: "no user found" });
-    }
-
-    if (user) {
-      if (
-        req.body.email === user.email &&
-        decryptedData === req.body.password
-      ) {
-        var token = jwt.sign({ email: user.email, name: user.name }, "ourkey", {
-          expiresIn: "1h",
-        });
-        res.status(200).json({ token: token, success: true });
-      } else {
-        res.status(200).json({ success: false, error: "wrong credentials " });
-      }
-    }
+    let bill = new Bill({
+      email: req.body.email,
+      bill_id: req.body.bill_id,
+      consignorName: req.body.consignorName,
+      consignorAddress: req.body.consignorAddress,
+      date: req.body.date,
+      from: req.body.from,
+      to: req.body.to,
+      distance: req.body.distance,
+      freightRate: req.body.freightRate,
+      cgst: req.body.cgst,
+      sgst: req.body.sgst,
+      total: req.body.total,
+      goods: req.body.goods,
+    });
+    await bill.save();
+    res.status(200).json({ success: true, data: req.body });
   } else {
     res.status(200).json({ success: false, error: "no user found" });
   }

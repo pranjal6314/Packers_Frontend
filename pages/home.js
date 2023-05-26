@@ -55,9 +55,10 @@ const home = () => {
     ]);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = {
+      bill_id: Math.floor(Math.random() * Date.now()),
       consignorName: document.getElementById("consignorName").value,
       consignorAddress: document.getElementById("consignorAddress").value,
       date: document.getElementById("date").value,
@@ -70,7 +71,14 @@ const home = () => {
       total: document.getElementById("total").value,
       goods: rows,
     };
-
+    let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/bill`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    let responce = await res.json();
     console.log(formData);
 
     // Reset form fields
