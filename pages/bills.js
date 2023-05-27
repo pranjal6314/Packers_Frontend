@@ -15,6 +15,7 @@ const Bills = () => {
       console.log(token);
       let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/allbills`, {
         method: "POST",
+
         headers: {
           "Content-Type": "application/json",
         },

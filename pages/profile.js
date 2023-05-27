@@ -5,10 +5,9 @@ import { useRouter } from "next/router";
 const Profile = () => {
   const router = useRouter();
   const [user, setUser] = useState({ value: null });
+
   const [key, setKey] = useState(0);
   useEffect(() => {
-    console.log("useEffect");
-
     const token = localStorage.getItem("token");
     if (token) {
       setUser({ value: token });
@@ -22,10 +21,95 @@ const Profile = () => {
     setUser({ value: null });
     setKey(Math.random());
   };
+  // const myself = JSON.parse(localStorage.getItem("myuser"));
+  // console.log(myself);
+
   return (
     <>
       <Navbar user={user} logout={logout} key={key} />
-      <div>profile</div>
+      <form id="myForm" className="max-w-lg mx-auto p-6">
+        profile
+        <div className="mb-4">
+          <label className="block mb-1 font-semibold" htmlFor="email">
+            Email
+          </label>
+          <input
+            className="w-full px-3 py-2 border"
+            type="text"
+            id="email"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label
+            className="block mb-1 font-semibold"
+            htmlFor="consignor_address"
+          >
+            Consignor Address
+          </label>
+          <input
+            className="w-full px-3 py-2 border"
+            type="text"
+            id="consignorAddress"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block mb-1 font-semibold" htmlFor="from">
+            From
+          </label>
+          <input
+            className="w-full px-3 py-2 border"
+            type="text"
+            id="from"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block font-semibold mb-2" htmlFor="to">
+            To
+          </label>
+          <input
+            className="w-full px-3 py-2 border rounded"
+            type="text"
+            id="to"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block font-semibold mb-2" htmlFor="distance">
+            Distance
+          </label>
+          <input
+            className="w-full px-3 py-2 border rounded"
+            type="number"
+            id="distance"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block font-semibold mb-2" htmlFor="freightRate">
+            Freight Rate
+          </label>
+          <input
+            className="w-full px-3 py-2 border rounded"
+            type="number"
+            id="freightRate"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block font-semibold mb-2" htmlFor="cgst">
+            CGST
+          </label>
+          <input
+            className="w-full px-3 py-2 border rounded"
+            type="number"
+            id="cgst"
+            required
+          />
+        </div>
+      </form>
     </>
   );
 };
