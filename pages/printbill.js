@@ -15,8 +15,9 @@ const PrintBill = () => {
       setData(JSON.parse(formData));
     }
     const token = localStorage.getItem("token");
+    const email = localStorage.getItem("email");
     if (token) {
-      setUser({ value: token });
+      setUser({ value: token, email: email });
       setKey(Math.random());
     } else {
       router.push("/");

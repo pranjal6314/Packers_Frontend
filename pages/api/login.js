@@ -23,7 +23,9 @@ const handler = async (req, res) => {
         // , {
         //   expiresIn: "1h",
         // }
-        res.status(200).json({ token: token, success: true });
+        res
+          .status(200)
+          .json({ token: token, success: true, email: user.email });
       } else {
         res.status(200).json({ success: false, error: "wrong credentials " });
       }

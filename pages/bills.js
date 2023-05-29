@@ -26,11 +26,11 @@ const Bills = () => {
       setBills(res.allbills);
     };
     const token = localStorage.getItem("token");
-
+    const email = localStorage.getItem("email");
     if (token) {
-      setUser({ value: token });
-      setKey(Math.random());
+      setUser({ value: token, email: email });
       fetchBill(token);
+      setKey(Math.random());
     } else {
       router.push("/");
     }

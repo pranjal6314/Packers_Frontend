@@ -9,8 +9,10 @@ const Profile = () => {
   const [key, setKey] = useState(0);
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const Myemail = localStorage.getItem("email");
+    console.log(Myemail);
     if (token) {
-      setUser({ value: token });
+      setUser({ value: token, email: Myemail });
       setKey(Math.random());
     } else {
       router.push("/");
@@ -21,8 +23,6 @@ const Profile = () => {
     setUser({ value: null });
     setKey(Math.random());
   };
-  // const myself = JSON.parse(localStorage.getItem("myuser"));
-  // console.log(myself);
 
   return (
     <>
@@ -37,7 +37,7 @@ const Profile = () => {
             className="w-full px-3 py-2 border"
             type="text"
             id="email"
-            required
+            value={user.email}
           />
         </div>
         <div className="mb-4">

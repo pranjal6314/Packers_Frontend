@@ -12,14 +12,15 @@ const home = () => {
   const [key, setKey] = useState(0);
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const email = localStorage.getItem("email");
     if (token) {
-      setUser({ value: token });
+      setUser({ value: token, email: email });
       setKey(Math.random());
     } else {
       router.push("/");
     }
   }, [router.query]);
-
+  console.log("user : ", user);
   const logout = () => {
     localStorage.removeItem("token");
     setUser({ value: null });
