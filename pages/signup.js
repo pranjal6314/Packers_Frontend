@@ -21,7 +21,7 @@ const signup = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const frombody = { name, email, password };
+    const frombody = { name, email, password, pin, pan, gstin, address, phone };
     let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/signup`, {
       method: "POST",
       headers: {

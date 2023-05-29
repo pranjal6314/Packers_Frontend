@@ -3,11 +3,16 @@ import connectDb from "../../middleware/monooges";
 var CryptoJS = require("crypto-js");
 const handler = async (req, res) => {
   if (req.method === "POST") {
-    const { name, email, password } = req.body;
+    const { name, email, password, phone, pin, gstin, address, pan } = req.body;
     let u = new User({
       name,
       email,
       password: CryptoJS.AES.encrypt(req.body.password, "sec1234").toString(),
+      phone,
+      pin,
+      gstin,
+      address,
+      pan,
     });
 
     await u.save();

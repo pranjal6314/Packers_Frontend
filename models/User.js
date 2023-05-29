@@ -10,6 +10,12 @@ const UserSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     password: { type: String, required: true },
+    address: { type: String, default: "" },
+    phone: { type: String, default: "" },
+    gstin: { type: String, default: "" },
+    pin: { type: String, default: "" },
+    pan: { type: String, default: "" },
+
     email: { type: String, required: true, unique: true },
   },
   { timestamps: true }
