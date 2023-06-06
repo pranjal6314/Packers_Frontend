@@ -3,10 +3,11 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Footer from "@/components/Footer";
+
 import jsonewebtoken from "jsonwebtoken";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-const home = (props) => {
+const Home = (props) => {
   console.log(props);
   const router = useRouter();
   const { formData } = router.query;
@@ -228,17 +229,7 @@ const home = (props) => {
             required
           />
         </div>
-        {/* <div className="mb-4">
-          <label className="block font-semibold mb-2" htmlFor="phoneno">
-            Phone Number
-          </label>
-          <input
-            className="w-full px-3 py-2 border rounded"
-            type="text"
-            id="phoneno"
-            required
-          />
-        </div> */}
+
         <div className="mb-4">
           <label className="block font-semibold mb-2" htmlFor="deliveryaddress">
             Delivery Address
@@ -272,28 +263,7 @@ const home = (props) => {
             required
           />
         </div>
-        {/* <div className="mb-4">
-          <label className="block font-semibold mb-2" htmlFor="pan">
-            PAN No
-          </label>
-          <input
-            className="w-full px-3 py-2 border rounded"
-            type="text"
-            id="pan"
-            required
-          />
-        </div> */}
-        {/* <div className="mb-4">
-          <label className="block font-semibold mb-2" htmlFor="gstin">
-            GSTIN
-          </label>
-          <input
-            className="w-full px-3 py-2 border rounded"
-            type="text"
-            id="gstin"
-            required
-          />
-        </div> */}
+
         <div className="mb-4">
           <label className="block font-semibold mb-2" htmlFor="freightRate">
             Freight Rate
@@ -437,4 +407,4 @@ const home = (props) => {
   );
 };
 
-export default home;
+export default Home;
