@@ -224,12 +224,10 @@ const PrintBill = () => {
           {/* Last Row */}
           <div className="flex justify-between mt-4">
             <div className="w-1/2 border-r p-2">
-              <p className="font-bold">Service</p>
-              <p className="font-bold">Congree</p>
-              <p className="font-bold">
-                consignor : {data && data?.consignorName}
-              </p>
-              <p className="font-bold">Transport</p>
+              <p className="font-bold">Service Tax Payable By</p>
+              <p className="font-bold">Consignee &#9634;</p>
+              <p className="font-bold">consignor &#9634;</p>
+              <p className="font-bold">Transporter &#9634;</p>
             </div>
             <div className="w-1/2 p-2">
               <p className="font-bold">Authorized Sign</p>

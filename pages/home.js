@@ -134,14 +134,11 @@ const Home = (props) => {
     document.getElementById("to").value = "";
     document.getElementById("lorryno").value = "";
     document.getElementById("distance").value = "";
-    document.getElementById("phoneno").value = "";
     document.getElementById("deliveryaddress").value = "";
     document.getElementById("freightRate").value = "";
     document.getElementById("cgst").value = "";
     document.getElementById("sgst").value = "";
     document.getElementById("igst").value = "";
-    document.getElementById("pan").value = "";
-    document.getElementById("gstin").value = "";
     document.getElementById("total").value = "";
 
     setRows([

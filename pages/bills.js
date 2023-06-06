@@ -8,6 +8,8 @@ import Box from "@mui/material/Box";
 import mongoose from "mongoose";
 import Link from "next/link";
 import Home from "./home";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const style2 = {
   position: "absolute",
   height: "100%",
@@ -65,30 +67,116 @@ const Bills = () => {
   const handleClose2 = () => {
     setOpen2(false);
   };
-  const editBill = (props) => {
-    setEdit(props);
-    setOpen2(true);
-  };
 
   const [consignorName, setConsignorName] = useState("");
-  const [newpassword, setnewPassword] = useState("");
+  const [consignorAddress, setconsignorAddress] = useState("");
   const [confirmPassword, SetconfirmPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [address, setAddress] = useState("");
-  const [pan, setPan] = useState("");
-  const [gstin, setGstin] = useState("");
-  const [phone, setphone] = useState("");
+  const [date, setDate] = useState("");
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+  const [deliveryaddress, setdeliveryaddress] = useState("");
+  const [distance, setDistance] = useState("");
+  const [lorryno, setlorryno] = useState("");
+  const [freightRate, setfreightRate] = useState("");
+  const [cgst, setcgst] = useState("");
+  const [igst, setigst] = useState("");
+  const [sgst, setsgst] = useState("");
+  const [total, settotal] = useState("");
+
+  const editBill = (props) => {
+    console.log(props);
+    setconsignorAddress(props.consignorAddress);
+    setConsignorName(props.consignorName);
+    setDate(props.date);
+    setFrom(props.from);
+    setTo(props.to);
+    setdeliveryaddress(props.deliveryaddress);
+    setDistance(props.distance);
+    setlorryno(props.lorryno);
+    setfreightRate(props.freightRate);
+    setcgst(props.cgst);
+    setigst(props.igst);
+    setsgst(props.sgst);
+    settotal(props.total);
+
+    setEdit(props.bill_id);
+    setOpen2(true);
+  };
+  console.log(editData);
   const handleChange = (e) => {
     if (e.target.name == "consignorName") setConsignorName(e.target.value);
-    else if (e.target.name == "address") setAddress(e.target.value);
-    else if (e.target.name == "phone") setphone(e.target.value);
-    else if (e.target.name == "pan") setPan(e.target.value);
-    else if (e.target.name == "gstin") setGstin(e.target.value);
-    else if (e.target.name == "password") setPassword(e.target.value);
-    else if (e.target.name == "newpassword") setnewPassword(e.target.value);
-    else if (e.target.name == "confirmpassword")
-      SetconfirmPassword(e.target.value);
+    else if (e.target.name == "consignorAddress")
+      setconsignorAddress(e.target.value);
+    else if (e.target.name == "date") setDate(e.target.value);
+    else if (e.target.name == "from") setFrom(e.target.value);
+    else if (e.target.name == "to") setTo(e.target.value);
+    else if (e.target.name == "deliveryaddress")
+      setdeliveryaddress(e.target.value);
+    else if (e.target.name == "distance") setDistance(e.target.value);
+    else if (e.target.name == "lorryno") setlorryno(e.target.value);
+    else if (e.target.name == "freightRate") setfreightRate(e.target.value);
+    else if (e.target.name == "cgst") setcgst(e.target.value);
+    else if (e.target.name == "igst") setigst(e.target.value);
+    else if (e.target.name == "sgst") setsgst(e.target.value);
+    else if (e.target.name == "total") settotal(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formdata = {
+      consignorName,
+      consignorAddress,
+      date,
+      from,
+      to,
+      deliveryaddress,
+      distance,
+      lorryno,
+      freightRate,
+      cgst,
+      igst,
+      sgst,
+      total,
+      id: editData,
+    };
+
+    // let data = { token: user.value, address, name, phone, gstin, pan };
+    let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/updatebill`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formdata),
+    });
+    let responce = await res.json();
+    // console.log(responce);
+    if (responce.success) {
+      toast.success("Your info updated !", {
+        position: "bottom-left",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      setTimeout(() => {
+        router.push("/home");
+      }, 2000);
+    } else {
+      toast.warn("Something going wrong!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
   return (
     <>
@@ -200,7 +288,8 @@ const Bills = () => {
                     Consignor Address
                   </label>
                   <input
-                    value={editData && editData?.consignorAddress}
+                    name="consignorAddress"
+                    value={consignorAddress}
                     className="w-full px-3 py-2 border"
                     type="text"
                     id="consignorAddress"
@@ -216,7 +305,8 @@ const Bills = () => {
                     className="w-full px-3 py-2 border"
                     type="date"
                     id="date"
-                    value={editData && editData?.date}
+                    value={date}
+                    name="date"
                     required
                     onChange={handleChange}
                   />
@@ -229,7 +319,8 @@ const Bills = () => {
                     className="w-full px-3 py-2 border"
                     type="text"
                     id="from"
-                    value={editData && editData?.from}
+                    value={from}
+                    name="from"
                     required
                     onChange={handleChange}
                   />
@@ -239,7 +330,8 @@ const Bills = () => {
                     To
                   </label>
                   <input
-                    value={editData && editData?.to}
+                    value={to}
+                    name="to"
                     className="w-full px-3 py-2 border rounded"
                     type="text"
                     id="to"
@@ -258,8 +350,9 @@ const Bills = () => {
                   <input
                     className="w-full px-3 py-2 border rounded"
                     type="text"
-                    value={editData && editData?.deliveryaddress}
+                    value={deliveryaddress}
                     id="deliveryaddress"
+                    name="deliveryaddress"
                     onChange={handleChange}
                     required
                   />
@@ -274,8 +367,9 @@ const Bills = () => {
                   <input
                     className="w-full px-3 py-2 border rounded"
                     type="number"
-                    value={editData && editData?.distance}
+                    value={distance}
                     id="distance"
+                    name="distance"
                     onChange={handleChange}
                     required
                   />
@@ -289,8 +383,9 @@ const Bills = () => {
                     type="text"
                     id="lorryno"
                     required
+                    name="lorryno"
                     onChange={handleChange}
-                    value={editData && editData?.lorryno}
+                    value={lorryno}
                   />
                 </div>
 
@@ -305,7 +400,8 @@ const Bills = () => {
                     className="w-full px-3 py-2 border rounded"
                     type="number"
                     id="freightRate"
-                    value={editData && editData?.freightRate}
+                    name="freightRate"
+                    value={freightRate}
                     required
                     onChange={handleChange}
                   />
@@ -317,7 +413,8 @@ const Bills = () => {
                   <input
                     className="w-full px-3 py-2 border rounded"
                     type="number"
-                    value={editData && editData?.cgst}
+                    name="cgst"
+                    value={cgst}
                     id="cgst"
                     onChange={handleChange}
                     required
@@ -330,9 +427,10 @@ const Bills = () => {
                   <input
                     className="w-full px-3 py-2 border rounded"
                     type="number"
+                    name="igst"
                     id="igst"
                     onChange={handleChange}
-                    value={editData && editData?.igst}
+                    value={igst}
                     required
                   />
                 </div>
@@ -344,9 +442,10 @@ const Bills = () => {
                     className="w-full px-3 py-2 border rounded"
                     type="number"
                     id="sgst"
+                    name="sgst"
                     onChange={handleChange}
                     required
-                    value={editData && editData?.sgst}
+                    value={sgst}
                   />
                 </div>
                 <div className="mb-4">
@@ -356,10 +455,11 @@ const Bills = () => {
                   <input
                     className="w-full px-3 py-2 border rounded"
                     type="text"
+                    name="total"
                     id="total"
                     onChange={handleChange}
                     required
-                    value={editData && editData?.total}
+                    value={total}
                   />
                 </div>
 
@@ -452,7 +552,7 @@ const Bills = () => {
                   </button> */}
                   <button
                     className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                    // onClick={handleSubmit}
+                    onClick={handleSubmit}
                   >
                     Update
                   </button>
