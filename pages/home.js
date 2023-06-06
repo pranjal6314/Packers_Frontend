@@ -6,7 +6,8 @@ import Footer from "@/components/Footer";
 import jsonewebtoken from "jsonwebtoken";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-const home = () => {
+const home = (props) => {
+  console.log(props);
   const router = useRouter();
   const { formData } = router.query;
   console.log(formData);
@@ -18,6 +19,7 @@ const home = () => {
     const email = localStorage.getItem("email");
     if (token) {
       setUser({ value: token, email: email });
+
       setMyemail(email);
       setKey(Math.random());
     } else {
@@ -74,16 +76,19 @@ const home = () => {
       to: document.getElementById("to").value,
       distance: document.getElementById("distance").value,
       lorryno: document.getElementById("lorryno").value,
-      phoneno: document.getElementById("phoneno").value,
+      //
+      deliveryaddress: document.getElementById("deliveryaddress").value,
       freightRate: document.getElementById("freightRate").value,
       cgst: document.getElementById("cgst").value,
       sgst: document.getElementById("sgst").value,
       igst: document.getElementById("igst").value,
-      pan: document.getElementById("pan").value,
-      gstin: document.getElementById("gstin").value,
+
       total: document.getElementById("total").value,
       goods: rows,
     };
+    //   phoneno: document.getElementById("phoneno").value,
+    // pan: document.getElementById("pan").value,
+    // gstin: document.getElementById("gstin").value,
     let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/bill`, {
       method: "POST",
       headers: {
@@ -129,6 +134,7 @@ const home = () => {
     document.getElementById("lorryno").value = "";
     document.getElementById("distance").value = "";
     document.getElementById("phoneno").value = "";
+    document.getElementById("deliveryaddress").value = "";
     document.getElementById("freightRate").value = "";
     document.getElementById("cgst").value = "";
     document.getElementById("sgst").value = "";
@@ -165,7 +171,7 @@ const home = () => {
       <form id="myForm" className="max-w-lg mx-auto p-6">
         <h2 className="text-2xl font-bold mb-4">Form</h2>
         <div className="mb-4">
-          <label className="block mb-1 font-semibold" htmlFor="consignor_name">
+          <label className="block mb-1 font-semibold" htmlFor="consignorName">
             Consignor Name
           </label>
           <input
@@ -178,7 +184,7 @@ const home = () => {
         <div className="mb-4">
           <label
             className="block mb-1 font-semibold"
-            htmlFor="consignor_address"
+            htmlFor="consignorAddress"
           >
             Consignor Address
           </label>
@@ -222,7 +228,7 @@ const home = () => {
             required
           />
         </div>
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="block font-semibold mb-2" htmlFor="phoneno">
             Phone Number
           </label>
@@ -230,6 +236,17 @@ const home = () => {
             className="w-full px-3 py-2 border rounded"
             type="text"
             id="phoneno"
+            required
+          />
+        </div> */}
+        <div className="mb-4">
+          <label className="block font-semibold mb-2" htmlFor="deliveryaddress">
+            Delivery Address
+          </label>
+          <input
+            className="w-full px-3 py-2 border rounded"
+            type="text"
+            id="deliveryaddress"
             required
           />
         </div>
@@ -255,7 +272,7 @@ const home = () => {
             required
           />
         </div>
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="block font-semibold mb-2" htmlFor="pan">
             PAN No
           </label>
@@ -265,8 +282,8 @@ const home = () => {
             id="pan"
             required
           />
-        </div>
-        <div className="mb-4">
+        </div> */}
+        {/* <div className="mb-4">
           <label className="block font-semibold mb-2" htmlFor="gstin">
             GSTIN
           </label>
@@ -276,7 +293,7 @@ const home = () => {
             id="gstin"
             required
           />
-        </div>
+        </div> */}
         <div className="mb-4">
           <label className="block font-semibold mb-2" htmlFor="freightRate">
             Freight Rate

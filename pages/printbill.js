@@ -11,6 +11,11 @@ const PrintBill = () => {
   const [data, setData] = useState(null);
   const [user, setUser] = useState({ value: null });
   const [key, setKey] = useState(0);
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+  const [pan, setPan] = useState("");
+  const [gstin, setGstin] = useState("");
+  const [phone, setphone] = useState("");
   useEffect(() => {
     if (formData) {
       setData(JSON.parse(formData));
@@ -19,6 +24,7 @@ const PrintBill = () => {
     const email = localStorage.getItem("email");
     if (token) {
       setUser({ value: token, email: email });
+      fetchuser(token);
       setKey(Math.random());
     } else {
       router.push("/");
@@ -30,7 +36,22 @@ const PrintBill = () => {
     setUser({ value: null });
     setKey(Math.random());
   };
-
+  const fetchuser = async (token) => {
+    let data = { token: token };
+    let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getuser`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    let responce = await res.json();
+    setName(responce.name);
+    setAddress(responce.address);
+    setGstin(responce.gstin);
+    setPan(responce.pan);
+    setphone(responce.phone);
+  };
   return (
     <>
       <Navbar user={user} logout={logout} key={key} />
@@ -44,7 +65,7 @@ const PrintBill = () => {
             <div className="w-5/6 border-l">
               <div className="flex h-full items-center p-2">
                 <div className="w-1/2">
-                  <p className="font-bold">Name : Royal Freight Carriers</p>
+                  <p className="font-bold">Name : {name}</p>
                   <p className="font-bold">Business : Packers & Movers</p>
                 </div>
               </div>
@@ -54,21 +75,37 @@ const PrintBill = () => {
           {/* Second Row */}
           <div className="flex border justify-between">
             <div className="w-1/2 border-r p-2">
-              <p className="font-bold">Address</p>
+              <p className="font-bold">Address : {address}</p>
             </div>
             <div className="w-1/2 p-2">
               <p className="font-bold">Email : {data?.email}</p>
-              <p className="font-bold">Phone Number : {data?.phoneno} </p>
+              <p className="font-bold">Phone Number :{phone} </p>
             </div>
           </div>
 
           {/* Third Row */}
           <div className="flex border">
             <div className="w-1/2 border-r p-2">
-              <p className="font-bold">PAN Number : {data?.pan}</p>
+              <p className="font-bold">PAN Number : {pan}</p>
             </div>
             <div className="w-1/2 p-2">
-              <p className="font-bold">GSTIN Number : {data?.gstin}</p>
+              <p className="font-bold">GSTIN Number : {gstin}</p>
+            </div>
+          </div>
+          {/* Third Row */}
+          <div className="flex border">
+            <div className="w-1/2 border-r p-2">
+              <p className="font-bold">
+                {" "}
+                Consignor Name : {data?.consignorName}
+              </p>
+              <p className="font-bold">
+                {" "}
+                Consignor Address : {data?.consignorAddress}
+              </p>
+            </div>
+            <div className="w-1/2 p-2">
+              <p className="font-bold">Notice : {}</p>
             </div>
           </div>
 
@@ -95,7 +132,9 @@ const PrintBill = () => {
           {/* Sixth Row */}
           <div className="flex border">
             <div className="w-1/2 border-r p-2">
-              <p className="font-bold">Delivery Address</p>
+              <p className="font-bold">
+                Delivery Address : {data && data?.deliveryaddress}
+              </p>
             </div>
             <div className="w-1/2 p-2">
               <p className="font-bold">Distance : {data && data?.distance}</p>
@@ -103,7 +142,7 @@ const PrintBill = () => {
           </div>
 
           {/* Seventh Row */}
-          {/* <div className="flex border">
+          {/* <div className=" mt-4 flex border border-black p-4">
             <div className="w-1/4 border-r p-2">
               <p className="font-bold">Package Name</p>
               <p>hi</p>
@@ -119,7 +158,7 @@ const PrintBill = () => {
             </div>
           </div> */}
 
-          <div className="mt-4 border border-black p-4">
+          <div className=" border ">
             <table className="w-full">
               <thead>
                 <tr>
@@ -133,7 +172,7 @@ const PrintBill = () => {
                 {/* Goods section */}
                 {data &&
                   data?.goods.map((item, index) => (
-                    <tr key={index}>
+                    <tr key={index} className="text-center w-full">
                       <td>{item.No_of_packages}</td>
                       <td>{item.Description}</td>
                       <td>{item.Weight}</td>
@@ -148,20 +187,29 @@ const PrintBill = () => {
             <div className="w-1/4 flex flex-col border-r">
               <div className="flex-grow p-2">
                 <p className="font-bold">Fright</p>
-                <p className="font-bold">IGST</p>
                 <p className="font-bold">SGST</p>
                 <p className="font-bold">CGST</p>
+                <p className="font-bold">IGST</p>
                 <p className="font-bold">Total : </p>
               </div>
             </div>
             <div className="w-1/4 flex flex-col border-r">
               <div className="flex-grow p-2">
-                <p className="font-bold">{data && data?.freightRate}</p>
-
-                <p className="font-bold">{data && data?.igst}</p>
-                <p className="font-bold">{data && data?.sgst}</p>
-                <p className="font-bold">{data && data?.cgst}</p>
-                <p className="font-bold">{data && data?.total}</p>
+                <p className="font-bold">
+                  {data && data.freightRate ? data.freightRate : "---"}
+                </p>
+                <p className="font-bold">
+                  {data && data.sgst ? data.sgst : "---"}
+                </p>
+                <p className="font-bold">
+                  {data && data.cgst ? data.cgst : "---"}
+                </p>
+                <p className="font-bold">
+                  {data && data.igst ? data.igst : "---"}
+                </p>
+                <p className="font-bold">
+                  {data && data.total ? data.total : "---"}
+                </p>
               </div>
             </div>
             <div className="w-1/2 flex flex-col">

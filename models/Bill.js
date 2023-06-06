@@ -19,6 +19,7 @@ const BillSchema = new mongoose.Schema(
     lorryno: { type: String },
     phoneno: { type: String },
     freightRate: { type: String },
+    deliveryaddress: { type: String },
     pan: { type: String },
     gstin: { type: String },
     cgst: { type: String },
