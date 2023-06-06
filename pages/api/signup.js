@@ -16,6 +16,7 @@ const handler = async (req, res) => {
     });
 
     await u.save();
+    console.log(u);
     res.status(200).json({ success: "success" });
   } else {
     res.status(400).json({ message: "We only support POST" });

@@ -16,9 +16,14 @@ const BillSchema = new mongoose.Schema(
     from: { type: String },
     to: { type: String },
     distance: { type: String },
+    lorryno: { type: String },
+    phoneno: { type: String },
     freightRate: { type: String },
+    pan: { type: String },
+    gstin: { type: String },
     cgst: { type: String },
     sgst: { type: String },
+    igst: { type: String },
     total: { type: String },
     goods: [
       {

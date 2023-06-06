@@ -5,14 +5,16 @@ import { useRouter } from "next/router";
 import Bill from "@/models/Bill";
 import mongoose from "mongoose";
 import Link from "next/link";
+// import Modal from "@mui/material/Modal";
 const Bills = () => {
   const router = useRouter();
+
   const [user, setUser] = useState({ value: null });
   const [key, setKey] = useState(0);
   const [bills, setBills] = useState([]);
   useEffect(() => {
     const fetchBill = async (token) => {
-      console.log(token);
+      // console.log(token);
       let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/allbills`, {
         method: "POST",
 
@@ -22,8 +24,9 @@ const Bills = () => {
         body: JSON.stringify({ token: token }),
       });
       let res = await a.json();
-      console.log(res.allbills);
-      setBills(res.allbills);
+      // console.log(res.allbills);
+      // setBills(res.allbills);
+      setBills(res.allbills.reverse());
     };
     const token = localStorage.getItem("token");
     const email = localStorage.getItem("email");
@@ -110,7 +113,7 @@ const Bills = () => {
                       <td className="px-6 py-4">
                         <Link
                           href={{
-                            pathname: "/printbill",
+                            pathname: "/home",
                             query: { formData: JSON.stringify(item) },
                           }}
                           key={item.bill_id}

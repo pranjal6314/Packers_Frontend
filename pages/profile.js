@@ -3,12 +3,15 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import User from "@/models/User";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Profile = () => {
   const router = useRouter();
   const [user, setUser] = useState({ value: null });
 
   const [key, setKey] = useState(0);
   const [password, setPassword] = useState("");
+  const [newpassword, setnewPassword] = useState("");
   const [confirmPassword, SetconfirmPassword] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -42,6 +45,7 @@ const Profile = () => {
     else if (e.target.name == "pan") setPan(e.target.value);
     else if (e.target.name == "gstin") setGstin(e.target.value);
     else if (e.target.name == "password") setPassword(e.target.value);
+    else if (e.target.name == "newpassword") setnewPassword(e.target.value);
     else if (e.target.name == "confirmpassword")
       SetconfirmPassword(e.target.value);
   };
@@ -68,8 +72,8 @@ const Profile = () => {
   };
 
   const handleUserSubmit = async (e) => {
-    const frombody = { email, name, address, phone, gstin, pan };
-    console.log(frombody);
+    // const frombody = { email, name, address, phone, gstin, pan };
+    // console.log(frombody);
     let data = { token: user.value, address, name, phone, gstin, pan };
     let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/updateuser`, {
       method: "POST",
@@ -80,12 +84,91 @@ const Profile = () => {
     });
     let responce = await res.json();
     console.log(responce);
+    if (responce.success) {
+      toast.success("Your info updated !", {
+        position: "bottom-left",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    } else {
+      toast.warn("Something going wrong!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+  const handlePasswordSubmit = async (e) => {
+    let responce;
+    if (newpassword === confirmPassword) {
+      let data = { token: user.value, password, newpassword, confirmPassword };
+      let res = await fetch(
+        `${process.env.NEXT_PUBLIC_HOST}/api/updatepassword`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+      responce = await res.json();
+    } else {
+      responce = { success: false };
+    }
+    if (responce.success) {
+      toast.success("Your Password Updated !", {
+        position: "bottom-left",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    } else {
+      toast.error("Something going wrong!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    setPassword("");
+    setnewPassword("");
+    SetconfirmPassword("");
   };
 
   return (
     <>
       <Navbar user={user} logout={logout} key={key} />
-
+      <ToastContainer
+        position="bottom-left"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       <div className="container mx-auto p-4">
         <h1 className="text-2xl font-bold mb-4">1. Profile-change</h1>
         <div className="bg-white shadow-md rounded-lg p-4">
@@ -184,13 +267,14 @@ const Profile = () => {
 
             <div>
               <label
-                for="password"
+                htmlFor="password"
                 className="block mb-2 text-sm font-medium dark:text-green-500 text-black"
               >
-                New Password
+                Password
               </label>
               <input
                 type="password"
+                onChange={handleChange}
                 name="password"
                 id="password"
                 placeholder="••••••••"
@@ -199,20 +283,38 @@ const Profile = () => {
             </div>
             <div>
               <label
-                for="confirmpassword"
+                htmlFor="newpassword"
                 className="block mb-2 text-sm font-medium dark:text-green-500 text-black"
               >
-                Confirm password
+                New Password
+              </label>
+              <input
+                onChange={handleChange}
+                type="newpassword"
+                name="newpassword"
+                id="newpassword"
+                placeholder="••••••••"
+                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="confirmpassword"
+                className="block mb-2 text-sm font-medium dark:text-green-500 text-black"
+              >
+                Confirm New Password
               </label>
               <input
                 type="confirmpassword"
                 name="confirmpassword"
+                onChange={handleChange}
                 id="confirmpassword"
                 placeholder="••••••••"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               />
             </div>
             <button
+              onClick={handlePasswordSubmit}
               className="bg-blue-500 mt-4 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               type="submit"
             >

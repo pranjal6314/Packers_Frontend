@@ -21,7 +21,16 @@ const handler = async (req, res) => {
       }
     );
     const { name, address, phone, email, pin, gstin, pan } = dbuser;
-    res.status(200).json({ name, address, phone, email, pin, gstin, pan });
+    res.status(200).json({
+      name,
+      address,
+      phone,
+      email,
+      pin,
+      gstin,
+      pan,
+      success: true,
+    });
   } else {
     res.status(400).json({ success: false, error: "no user found" });
   }

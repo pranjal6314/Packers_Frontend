@@ -21,7 +21,8 @@ const signup = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const frombody = { name, email, password, pin, pan, gstin, address, phone };
+    // const frombody = { name, email, password, pan, gstin, address, phone };
+    const frombody = { name, email, password };
     let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/signup`, {
       method: "POST",
       headers: {
@@ -33,7 +34,7 @@ const signup = () => {
     setName("");
     setEmail("");
     setPassword("");
-    toast.success("your account has been created!", {
+    toast.success("your account has been created! Now click login ", {
       position: "bottom-left",
       autoClose: 2000,
       hideProgressBar: false,

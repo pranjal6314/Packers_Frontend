@@ -8,13 +8,17 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const home = () => {
   const router = useRouter();
+  const { formData } = router.query;
+  console.log(formData);
   const [user, setUser] = useState({ value: null });
+  const [myemail, setMyemail] = useState(null);
   const [key, setKey] = useState(0);
   useEffect(() => {
     const token = localStorage.getItem("token");
     const email = localStorage.getItem("email");
     if (token) {
       setUser({ value: token, email: email });
+      setMyemail(email);
       setKey(Math.random());
     } else {
       router.push("/");
@@ -61,7 +65,7 @@ const home = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = {
-      email: "admin@gmail.com",
+      email: myemail,
       bill_id: Math.floor(Math.random() * Date.now()),
       consignorName: document.getElementById("consignorName").value,
       consignorAddress: document.getElementById("consignorAddress").value,
@@ -69,9 +73,14 @@ const home = () => {
       from: document.getElementById("from").value,
       to: document.getElementById("to").value,
       distance: document.getElementById("distance").value,
+      lorryno: document.getElementById("lorryno").value,
+      phoneno: document.getElementById("phoneno").value,
       freightRate: document.getElementById("freightRate").value,
       cgst: document.getElementById("cgst").value,
       sgst: document.getElementById("sgst").value,
+      igst: document.getElementById("igst").value,
+      pan: document.getElementById("pan").value,
+      gstin: document.getElementById("gstin").value,
       total: document.getElementById("total").value,
       goods: rows,
     };
@@ -117,10 +126,15 @@ const home = () => {
     document.getElementById("date").value = "";
     document.getElementById("from").value = "";
     document.getElementById("to").value = "";
+    document.getElementById("lorryno").value = "";
     document.getElementById("distance").value = "";
+    document.getElementById("phoneno").value = "";
     document.getElementById("freightRate").value = "";
     document.getElementById("cgst").value = "";
     document.getElementById("sgst").value = "";
+    document.getElementById("igst").value = "";
+    document.getElementById("pan").value = "";
+    document.getElementById("gstin").value = "";
     document.getElementById("total").value = "";
 
     setRows([
@@ -209,6 +223,17 @@ const home = () => {
           />
         </div>
         <div className="mb-4">
+          <label className="block font-semibold mb-2" htmlFor="phoneno">
+            Phone Number
+          </label>
+          <input
+            className="w-full px-3 py-2 border rounded"
+            type="text"
+            id="phoneno"
+            required
+          />
+        </div>
+        <div className="mb-4">
           <label className="block font-semibold mb-2" htmlFor="distance">
             Distance
           </label>
@@ -216,6 +241,39 @@ const home = () => {
             className="w-full px-3 py-2 border rounded"
             type="number"
             id="distance"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block font-semibold mb-2" htmlFor="lorryno">
+            Lorry Number{" "}
+          </label>
+          <input
+            className="w-full px-3 py-2 border rounded"
+            type="text"
+            id="lorryno"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block font-semibold mb-2" htmlFor="pan">
+            PAN No
+          </label>
+          <input
+            className="w-full px-3 py-2 border rounded"
+            type="text"
+            id="pan"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block font-semibold mb-2" htmlFor="gstin">
+            GSTIN
+          </label>
+          <input
+            className="w-full px-3 py-2 border rounded"
+            type="text"
+            id="gstin"
             required
           />
         </div>
@@ -238,6 +296,17 @@ const home = () => {
             className="w-full px-3 py-2 border rounded"
             type="number"
             id="cgst"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block font-semibold mb-2" htmlFor="igst">
+            IGST
+          </label>
+          <input
+            className="w-full px-3 py-2 border rounded"
+            type="number"
+            id="igst"
             required
           />
         </div>
