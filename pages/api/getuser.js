@@ -9,10 +9,10 @@ const handler = async (req, res) => {
     let token = req.body.token;
     const user = jsonewebtoken.verify(token, "ourkey");
     let dbuser = await User.findOne({ email: user.email });
-    const { name, address, phone, email, pin, gstin, pan } = dbuser;
+    const { name, address, phone, email, pin, gstin, pan, image } = dbuser;
     res
       .status(200)
-      .json({ name, address, phone, email, pin, gstin, phone, pan });
+      .json({ name, address, phone, email, pin, gstin, phone, pan, image });
   } else {
     res.status(400).json({ success: false, error: "no user found" });
   }

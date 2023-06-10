@@ -19,7 +19,7 @@ const Profile = () => {
   const [pan, setPan] = useState("");
   const [gstin, setGstin] = useState("");
   const [phone, setphone] = useState("");
-
+  const [image, setImage] = useState("");
   useEffect(() => {
     const token = localStorage.getItem("token");
     const Myemail = localStorage.getItem("email");
@@ -46,8 +46,21 @@ const Profile = () => {
     else if (e.target.name == "gstin") setGstin(e.target.value);
     else if (e.target.name == "password") setPassword(e.target.value);
     else if (e.target.name == "newpassword") setnewPassword(e.target.value);
-    else if (e.target.name == "confirmpassword")
+    else if (e.target.name == "confirmpassword") {
       SetconfirmPassword(e.target.value);
+    }
+    if (e.target && e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setImage(reader.result);
+        }
+      };
+
+      reader.readAsDataURL(file);
+    }
   };
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -72,9 +85,8 @@ const Profile = () => {
   };
 
   const handleUserSubmit = async (e) => {
-    // const frombody = { email, name, address, phone, gstin, pan };
-    // console.log(frombody);
-    let data = { token: user.value, address, name, phone, gstin, pan };
+    let data = { token: user.value, address, name, phone, gstin, pan, image };
+    console.log(data);
     let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/updateuser`, {
       method: "POST",
       headers: {
@@ -255,6 +267,28 @@ const Profile = () => {
                 name="phone"
                 onChange={handleChange}
               />
+            </div>
+            <div className="mb-4">
+              <label className="text-gray-700 font-bold mb-2" htmlFor="image">
+                Image
+              </label>
+              <input
+                className="w-full border border-gray-300 p-2 rounded-md"
+                type="file"
+                id="image"
+                name="image"
+                accept="image/*"
+                onChange={handleChange}
+              />
+              {image && (
+                <div>
+                  <img
+                    src={image}
+                    alt="Selected"
+                    className="mt-4 rounded-md h-32 w-32"
+                  />
+                </div>
+              )}
             </div>
             <button
               className="bg-blue-500 m-4 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"

@@ -18,9 +18,10 @@ const handler = async (req, res) => {
         phone: req.body.phone,
         pan: req.body.pan,
         gstin: req.body.gstin,
+        image: req.body.image,
       }
     );
-    const { name, address, phone, email, pin, gstin, pan } = dbuser;
+    const { name, address, phone, email, pin, gstin, pan, image } = dbuser;
     res.status(200).json({
       name,
       address,
@@ -29,6 +30,7 @@ const handler = async (req, res) => {
       pin,
       gstin,
       pan,
+      image,
       success: true,
     });
   } else {

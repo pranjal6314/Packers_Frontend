@@ -15,6 +15,14 @@ const UserSchema = new mongoose.Schema(
     gstin: { type: String, default: "" },
     pin: { type: String, default: "" },
     pan: { type: String, default: "" },
+    image: {
+      type: String,
+      default: "",
+    },
+    // image: {
+    //   data: Buffer,
+    //   contentType: String,
+    // },
 
     email: { type: String, required: true, unique: true },
   },
