@@ -12,6 +12,7 @@ const BillSchema = new mongoose.Schema(
     bill_id: { type: String },
     consignorName: { type: String },
     consignorAddress: { type: String },
+    consigneeGst: { type: String },
     date: { type: String },
     from: { type: String },
     to: { type: String },

@@ -82,6 +82,7 @@ const Profile = () => {
     setGstin(responce.gstin);
     setPan(responce.pan);
     setphone(responce.phone);
+    setImage(responce.image);
   };
 
   const handleUserSubmit = async (e) => {

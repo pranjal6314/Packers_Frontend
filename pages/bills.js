@@ -102,7 +102,7 @@ const Bills = () => {
     setEdit(props.bill_id);
     setOpen2(true);
   };
-  console.log(editData);
+
   const handleChange = (e) => {
     if (e.target.name == "consignorName") setConsignorName(e.target.value);
     else if (e.target.name == "consignorAddress")
@@ -261,7 +261,7 @@ const Bills = () => {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style2}>
-            <div handleClose2={handleClose2}>
+            <div>
               <form id="myForm" className="max-w-lg mx-auto p-6">
                 <h2 className="text-2xl font-bold mb-4">Form</h2>
                 <div className="mb-4">

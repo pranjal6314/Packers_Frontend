@@ -11,6 +11,7 @@ const handler = async (req, res) => {
       bill_id: req.body.bill_id,
       consignorName: req.body.consignorName,
       consignorAddress: req.body.consignorAddress,
+      consigneeGst: req.body.consigneeGst,
       date: req.body.date,
       from: req.body.from,
       to: req.body.to,

@@ -60,28 +60,29 @@ const PrintBill = () => {
     backgroundImage: `url(${imgurl})`,
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
-    backgroundSize: "contain",
+    backgroundSize: "500px 300px",
   };
   return (
     <>
       <Navbar user={user} logout={logout} key={key} />
-      <div className="relative">
+
+      <div className="">
         <div
-          className="p-8 watermark-form"
+          className="p-8 relative watermark-form"
           style={watermarkFormStyle}
           ref={(el) => (componentRef = el)}
         >
           <div className="container mx-auto p-4">
             {/* First Row */}
-            <div className="flex border">
-              <div className="w-1/6 flex items-center justify-center">
-                <img src={imgurl} alt="Home" className="h-8" />
+            <div className="flex border flex-row h-32 ">
+              <div className="flex items-center justify-center  w-1/3">
+                <img src={imgurl} alt="Home" className="h-28 w-32" />
               </div>
-              <div className="w-5/6 border-l">
-                <div className="flex h-full items-center p-2">
-                  <div className="w-1/2">
-                    <p className="font-bold">Name : {name}</p>
-                    <p className="font-bold">Business : Packers & Movers</p>
+              <div className="">
+                <div className="flex h-full items-center p-2 ">
+                  <div className="">
+                    <p className="font-bold text-3xl"> {name}</p>
+                    <p className="font-bold text-2xl"> Packers &amp; Movers</p>
                   </div>
                 </div>
               </div>
@@ -117,6 +118,10 @@ const PrintBill = () => {
                 <p className="font-bold">
                   {" "}
                   Consignor Address : {data?.consignorAddress}
+                </p>
+                <p className="font-bold">
+                  {" "}
+                  Consignee Gst : {data?.consigneeGst}
                 </p>
               </div>
               <div className="w-1/2 p-2">
@@ -157,21 +162,6 @@ const PrintBill = () => {
             </div>
 
             {/* Seventh Row */}
-            {/* <div className=" mt-4 flex border border-black p-4">
-            <div className="w-1/4 border-r p-2">
-              <p className="font-bold">Package Name</p>
-              <p>hi</p>
-            </div>
-            <div className="w-1/4 border-r p-2">
-              <p className="font-bold">No.of Packages </p>
-            </div>
-            <div className="w-1/4 border-r p-2">
-              <p className="font-bold">Weight</p>
-            </div>
-            <div className="w-1/4 border-r p-2">
-              <p className="font-bold">Rate</p>
-            </div>
-          </div> */}
 
             <div className=" border ">
               <table className="w-full">
@@ -239,7 +229,7 @@ const PrintBill = () => {
             {/* Empty Row */}
 
             {/* Last Row */}
-            <div className="flex justify-between mt-4">
+            <div className="flex justify-between  border">
               <div className="w-1/2 border-r p-2">
                 <p className="font-bold">Service Tax Payable By</p>
                 <p className="font-bold">Consignee &#9634;</p>
@@ -254,11 +244,11 @@ const PrintBill = () => {
         </div>
       </div>
 
-      <div className="flex justify-center items-center ">
+      <div className="flex justify-center items-center mb-2">
         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
           <FaPrint className="mr-2" />{" "}
           <ReactToPrint
-            trigger={() => <button>Print this out!</button>}
+            trigger={() => <span>Print this out!</span>}
             content={() => componentRef}
           />
         </button>

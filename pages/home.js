@@ -15,6 +15,16 @@ const Home = (props) => {
   const [user, setUser] = useState({ value: null });
   const [myemail, setMyemail] = useState(null);
   const [key, setKey] = useState(0);
+  const [isAnimated, setIsAnimated] = useState(false);
+
+  const handleOrderClick = () => {
+    if (!isAnimated) {
+      setIsAnimated(true);
+      setTimeout(() => {
+        setIsAnimated(false);
+      }, 10000);
+    }
+  };
   useEffect(() => {
     const token = localStorage.getItem("token");
     const email = localStorage.getItem("email");
@@ -67,23 +77,28 @@ const Home = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!isAnimated) {
+      setIsAnimated(true);
+      setTimeout(() => {
+        setIsAnimated(false);
+      }, 10000);
+    }
     const formData = {
       email: myemail,
       bill_id: Math.floor(Math.random() * Date.now()),
       consignorName: document.getElementById("consignorName").value,
       consignorAddress: document.getElementById("consignorAddress").value,
+      consigneeGst: document.getElementById("consigneeGst").value,
       date: document.getElementById("date").value,
       from: document.getElementById("from").value,
       to: document.getElementById("to").value,
       distance: document.getElementById("distance").value,
       lorryno: document.getElementById("lorryno").value,
-      //
       deliveryaddress: document.getElementById("deliveryaddress").value,
       freightRate: document.getElementById("freightRate").value,
       cgst: document.getElementById("cgst").value,
       sgst: document.getElementById("sgst").value,
       igst: document.getElementById("igst").value,
-
       total: document.getElementById("total").value,
       goods: rows,
     };
@@ -109,10 +124,13 @@ const Home = (props) => {
         progress: undefined,
         theme: "colored",
       });
-      router.push({
-        pathname: "/printbill",
-        query: { formData: JSON.stringify(formData) },
-      });
+
+      setTimeout(() => {
+        router.push({
+          pathname: "/printbill",
+          query: { formData: JSON.stringify(formData) },
+        });
+      }, 10000);
     } else {
       toast.warn("Try again!", {
         position: "top-right",
@@ -129,6 +147,7 @@ const Home = (props) => {
     // Reset form fields
     document.getElementById("consignorName").value = "";
     document.getElementById("consignorAddress").value = "";
+    document.getElementById("consigneeGst").value = "";
     document.getElementById("date").value = "";
     document.getElementById("from").value = "";
     document.getElementById("to").value = "";
@@ -190,6 +209,17 @@ const Home = (props) => {
             className="w-full px-3 py-2 border"
             type="text"
             id="consignorAddress"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block mb-1 font-semibold" htmlFor="consigneeGst">
+            Consignee Gst
+          </label>
+          <input
+            className="w-full px-3 py-2 border"
+            type="text"
+            id="consigneeGst"
             required
           />
         </div>
@@ -386,18 +416,42 @@ const Home = (props) => {
               ))}
             </tbody>
           </table>
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
-            onClick={handleAddRow}
-          >
-            Add Row
-          </button>
-          <button
+          <div className="flex flex-col">
+            <button
+              className="  bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
+              onClick={handleAddRow}
+            >
+              Add Row
+            </button>
+            {/* <button
             className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
             onClick={handleSubmit}
           >
             Submit
-          </button>
+          </button> */}
+            <button
+              className={`order ${isAnimated ? "animate" : ""}`}
+              onClick={handleSubmit}
+            >
+              <span className="default">Submit</span>
+              <span className="success">
+                Order Placed
+                <svg viewBox="0 0 12 10">
+                  <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                </svg>
+              </span>
+              <div className="box"></div>
+              <div className="truck">
+                <div className="back"></div>
+                <div className="front">
+                  <div className="window"></div>
+                </div>
+                <div className="light top"></div>
+                <div className="light bottom"></div>
+              </div>
+              <div className="lines"></div>
+            </button>{" "}
+          </div>
         </div>
       </form>
     </>
