@@ -8,10 +8,10 @@ import jsonewebtoken from "jsonwebtoken";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const Home = (props) => {
-  console.log(props);
+  //console.log(props);
   const router = useRouter();
   const { formData } = router.query;
-  console.log(formData);
+  //console.log(formData);
   const [user, setUser] = useState({ value: null });
   const [myemail, setMyemail] = useState(null);
   const [key, setKey] = useState(0);
@@ -37,7 +37,7 @@ const Home = (props) => {
       router.push("/");
     }
   }, [router.query]);
-  console.log("user : ", user);
+  //console.log("user : ", user);
   const logout = () => {
     localStorage.removeItem("token");
     setUser({ value: null });
@@ -51,6 +51,7 @@ const Home = (props) => {
       Description: "",
       Weight: "",
       rate: "",
+      loading_charges: "",
     },
   ]);
 
@@ -71,6 +72,10 @@ const Home = (props) => {
         Description: "",
         Weight: "",
         rate: "",
+        loading_charges: "",
+        packing_charges: "",
+        unloading_charges: "",
+        unpacking_charges: "",
       },
     ]);
   };
@@ -81,7 +86,7 @@ const Home = (props) => {
       setIsAnimated(true);
       setTimeout(() => {
         setIsAnimated(false);
-      }, 10000);
+      }, 4000);
     }
     const formData = {
       email: myemail,
@@ -115,7 +120,7 @@ const Home = (props) => {
     let responce = await res.json();
     if (responce.success) {
       toast.success("your bill is successfully created!", {
-        position: "bottom-left",
+        position: "bottom-right",
         autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -130,7 +135,7 @@ const Home = (props) => {
           pathname: "/printbill",
           query: { formData: JSON.stringify(formData) },
         });
-      }, 10000);
+      }, 4000);
     } else {
       toast.warn("Try again!", {
         position: "top-right",
@@ -185,7 +190,7 @@ const Home = (props) => {
         pauseOnHover
         theme="colored"
       />
-      <form id="myForm" className="max-w-lg mx-auto p-6">
+      <form id="myForm" className="max-w-4xl mx-auto p-6">
         <h2 className="text-2xl font-bold mb-4">Form</h2>
         <div className="mb-4">
           <label className="block mb-1 font-semibold" htmlFor="consignorName">
@@ -357,6 +362,10 @@ const Home = (props) => {
                 <th className="px-4 py-2">Description</th>
                 <th className="px-4 py-2">Weight</th>
                 <th className="px-4 py-2">Rate</th>
+                <th className="px-4 py-2">Loading Charges</th>
+                <th className="px-4 py-2">Packing Charges</th>
+                <th className="px-4 py-2">Unpacking Charges</th>
+                <th className="px-4 py-2">Unloading Charges</th>
               </tr>
             </thead>
             <tbody>
@@ -409,6 +418,46 @@ const Home = (props) => {
                       value={row.rate}
                       onChange={(e) =>
                         handleChange(index, "rate", e.target.value)
+                      }
+                    />
+                  </td>
+                  <td className="border px-4 py-2">
+                    <input
+                      type="text"
+                      className="w-full px-2 py-1 border rounded"
+                      value={row.loading_charges}
+                      onChange={(e) =>
+                        handleChange(index, "loading_charges", e.target.value)
+                      }
+                    />
+                  </td>
+                  <td className="border px-4 py-2">
+                    <input
+                      type="text"
+                      className="w-full px-2 py-1 border rounded"
+                      value={row.packing_charges}
+                      onChange={(e) =>
+                        handleChange(index, "packing_charges", e.target.value)
+                      }
+                    />
+                  </td>
+                  <td className="border px-4 py-2">
+                    <input
+                      type="text"
+                      className="w-full px-2 py-1 border rounded"
+                      value={row.unpacking_charges}
+                      onChange={(e) =>
+                        handleChange(index, "unpacking_charges", e.target.value)
+                      }
+                    />
+                  </td>
+                  <td className="border px-4 py-2">
+                    <input
+                      type="text"
+                      className="w-full px-2 py-1 border rounded"
+                      value={row.unloading_charges}
+                      onChange={(e) =>
+                        handleChange(index, "unloading_charges", e.target.value)
                       }
                     />
                   </td>

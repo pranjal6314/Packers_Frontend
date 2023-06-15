@@ -26,9 +26,10 @@ const handler = async (req, res) => {
         total: req.body.total,
       }
     );
-    const { name } = dbuser;
+    // const { name } = dbuser;
     res.status(200).json({
       success: true,
+      dbuser: dbuser,
     });
   } else {
     res.status(400).json({ success: false, error: "no user found" });

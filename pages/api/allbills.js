@@ -5,7 +5,7 @@ import jsonewebtoken from "jsonwebtoken";
 const handler = async (req, res) => {
   const token = req.body.token;
   const data = jsonewebtoken.verify(token, "ourkey");
-  console.log(data);
+  // console.log(data);
   let allbills = await bill.find({ email: data.email });
   console.log(allbills);
   res.status(200).json({ allbills });

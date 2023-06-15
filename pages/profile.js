@@ -21,6 +21,7 @@ const Profile = () => {
   const [phone, setphone] = useState("");
   const [image, setImage] = useState("");
   useEffect(() => {
+    //console.log("useEffect in profile");
     const token = localStorage.getItem("token");
     const Myemail = localStorage.getItem("email");
     setEmail(Myemail);
@@ -76,7 +77,7 @@ const Profile = () => {
       body: JSON.stringify(data),
     });
     let responce = await res.json();
-    console.log(responce);
+    //console.log(responce);
     setName(responce.name);
     setAddress(responce.address);
     setGstin(responce.gstin);
@@ -87,7 +88,7 @@ const Profile = () => {
 
   const handleUserSubmit = async (e) => {
     let data = { token: user.value, address, name, phone, gstin, pan, image };
-    console.log(data);
+    //console.log(data);
     let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/updateuser`, {
       method: "POST",
       headers: {
@@ -96,7 +97,7 @@ const Profile = () => {
       body: JSON.stringify(data),
     });
     let responce = await res.json();
-    console.log(responce);
+    //console.log(responce);
     if (responce.success) {
       toast.success("Your info updated !", {
         position: "bottom-left",
@@ -285,6 +286,7 @@ const Profile = () => {
                 <div>
                   <img
                     src={image}
+                    priority
                     alt="Selected"
                     className="mt-4 rounded-md h-32 w-32"
                   />
@@ -296,7 +298,12 @@ const Profile = () => {
               type="submit"
               onClick={handleUserSubmit}
             >
-              Submit
+              <a
+                href="#"
+                className="btn-flip"
+                data-back="Click"
+                data-front="Update"
+              ></a>
             </button>
             <h1 className="text-2xl font-bold mb-4">2. Password Change</h1>
 

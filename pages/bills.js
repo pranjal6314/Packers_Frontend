@@ -23,6 +23,7 @@ const style2 = {
   boxShadow: 24,
 };
 // import Modal from "@mui/material/Modal";
+
 const Bills = () => {
   const router = useRouter();
 
@@ -30,24 +31,15 @@ const Bills = () => {
   const [key, setKey] = useState(0);
   const [bills, setBills] = useState([]);
   const [open2, setOpen2] = useState(false);
-  const [editData, setEdit] = useState({});
+  const [billId, setBillid] = useState("");
+  const [deleteBillId, setDeleteBillId] = useState("");
+  const [searchText, setSearchText] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [token, setToken] = useState("");
   useEffect(() => {
-    const fetchBill = async (token) => {
-      // console.log(token);
-      let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/allbills`, {
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ token: token }),
-      });
-      let res = await a.json();
-      // console.log(res.allbills);
-      // setBills(res.allbills);
-      setBills(res.allbills.reverse());
-    };
     const token = localStorage.getItem("token");
+    setToken(token);
+    fetchBill(token);
     const email = localStorage.getItem("email");
 
     if (token) {
@@ -57,7 +49,20 @@ const Bills = () => {
     } else {
       router.push("/");
     }
-  }, [router.query]);
+  }, [router.query, deleteBillId, billId]);
+  const fetchBill = async (token) => {
+    let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/allbills`, {
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ token: token }),
+    });
+    let res = await a.json();
+    setBills(res.allbills.reverse());
+    setSearchResults(Object.values(res.allbills.reverse()));
+  };
   const logout = () => {
     localStorage.removeItem("token");
     setUser({ value: null });
@@ -84,7 +89,6 @@ const Bills = () => {
   const [total, settotal] = useState("");
 
   const editBill = (props) => {
-    console.log(props);
     setconsignorAddress(props.consignorAddress);
     setConsignorName(props.consignorName);
     setDate(props.date);
@@ -99,8 +103,50 @@ const Bills = () => {
     setsgst(props.sgst);
     settotal(props.total);
 
-    setEdit(props.bill_id);
+    setBillid(props.bill_id);
     setOpen2(true);
+  };
+  const deleteBill = async (billId) => {
+    try {
+      let response = await fetch(
+        `${process.env.NEXT_PUBLIC_HOST}/api/deletebill`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ billId }),
+        }
+      );
+      const res = await response.json();
+      if (res.success) {
+        fetchBill(token);
+        toast.success("Bill is Deleted !", {
+          position: "bottom-left",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      } else {
+        toast.warn("Something going wrong!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+    } catch (error) {
+      // Handle any network or API-related errors
+      //console.error("Error:", error);
+    }
   };
 
   const handleChange = (e) => {
@@ -138,7 +184,7 @@ const Bills = () => {
       igst,
       sgst,
       total,
-      id: editData,
+      id: billId,
     };
 
     // let data = { token: user.value, address, name, phone, gstin, pan };
@@ -150,7 +196,6 @@ const Bills = () => {
       body: JSON.stringify(formdata),
     });
     let responce = await res.json();
-    // console.log(responce);
     if (responce.success) {
       toast.success("Your info updated !", {
         position: "bottom-left",
@@ -178,11 +223,81 @@ const Bills = () => {
       });
     }
   };
+
+  // const handleSearch = () => {
+  //   // Perform search logic here
+  //   const filteredResults = searchText
+  //     ? Object.keys(bills).reduce((result, key) => {
+  //         if (
+  //           bills[key]?.consignorName
+  //             ?.toLowerCase()
+  //             .includes(searchText.toLowerCase())
+  //         ) {
+  //           result.push(bills[key]);
+  //         }
+  //         return result;
+  //       }, [])
+  //     : Object.values(bills);
+
+  //   setSearchResults(
+  //     filteredResults.length > 0 ? filteredResults : Object.values(bills)
+  //   );
+  // };
+
+  const handleSearch = (searchText) => {
+    // Perform search logic here
+    const filteredResults = searchText
+      ? Object.keys(bills).reduce((result, key) => {
+          if (
+            bills[key]?.consignorName
+              ?.toLowerCase()
+              .includes(searchText.toLowerCase())
+          ) {
+            result.push(bills[key]);
+          }
+          return result;
+        }, [])
+      : Object.values(bills);
+
+    setSearchResults(
+      filteredResults.length > 0 ? filteredResults : Object.values(bills)
+    );
+  };
+
+  const handleChange_search = (e) => {
+    const searchText = e.target.value;
+    setSearchText(searchText);
+    handleSearch(searchText);
+  };
+
   return (
     <>
       <Navbar user={user} logout={logout} key={key} />
       <div className="container bg-slate-400 mx-auto">
-        <h1 className="font-semibold text-center p-8">my bills</h1>
+        <div className="flex justify-between border">
+          <div className="w-1/3 flex items-center justify-center">
+            <h1 className="font-bold text-2xl py-8 font-serif">My Bills</h1>
+          </div>
+
+          <div className="w-2/3 flex items-center justify-center">
+            <div className="relative flex">
+              <input
+                type="text"
+                placeholder="Search..."
+                className="px-4 py-2 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500 mr-2"
+                value={searchText}
+                onChange={handleChange_search}
+              />
+              <button
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+                onClick={() => handleSearch(searchText)}
+              >
+                Search
+              </button>
+            </div>
+          </div>
+        </div>
+
         <div className="items">
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -206,10 +321,13 @@ const Bills = () => {
                   <th scope="col" className="px-6 py-3">
                     Action
                   </th>
+                  <th scope="col" className="px-6 py-3">
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {bills?.map((item) => {
+                {searchResults?.map((item) => {
                   return (
                     <tr
                       key={item._id}
@@ -221,7 +339,12 @@ const Bills = () => {
                       >
                         {item.consignorAddress}
                       </th>
-                      <td className="px-6 py-4">{item.consignorName}</td>
+                      <th
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        {item.consignorName}
+                      </th>
                       <td className="px-6 py-4">{item.date}</td>
                       <td className="px-6 py-4">{item.total}</td>
                       <td className="px-6 py-4">
@@ -235,6 +358,9 @@ const Bills = () => {
                           key={item.bill_id}
                           className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                         >
+                          {/* <button className="print-button">
+                            <span className="print-icon"></span>
+                          </button> */}
                           print
                         </Link>
                       </td>
@@ -242,9 +368,27 @@ const Bills = () => {
                         <button
                           onClick={() => editBill(item)}
                           key={item.bill_id}
+                          className="edit"
+                          type="button"
+                        >
+                          <span className="edit-icon"></span>
+                          <span>Edit</span>
+                        </button>
+                        {/* <button
+                          onClick={() => editBill(item)}
+                          key={item.bill_id}
                           className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                         >
                           edit
+                        </button> */}
+                      </td>
+                      <td className="px-6 py-4">
+                        <button
+                          onClick={() => deleteBill(item.bill_id)}
+                          key={item.bill_id}
+                          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                        >
+                          Delete
                         </button>
                       </td>
                     </tr>

@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Link from "next/link";
 const signup = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -23,6 +24,7 @@ const signup = () => {
     e.preventDefault();
     // const frombody = { name, email, password, pan, gstin, address, phone };
     const frombody = { name, email, password };
+    console.log(frombody);
     let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/signup`, {
       method: "POST",
       headers: {
@@ -34,16 +36,41 @@ const signup = () => {
     setName("");
     setEmail("");
     setPassword("");
-    toast.success("your account has been created! Now click login ", {
-      position: "bottom-left",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
+    // toast.success("your account has been created! Now click login ", {
+    //   position: "bottom-left",
+    //   autoClose: 2000,
+    //   hideProgressBar: false,
+    //   closeOnClick: true,
+    //   pauseOnHover: true,
+    //   draggable: true,
+    //   progress: undefined,
+    //   theme: "colored",
+    // });
+    if (responce.success) {
+      localStorage.setItem("token", responce.token);
+      localStorage.setItem("email", responce.email);
+      toast.success("your account has been created! Now click login", {
+        position: "bottom-left",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    } else {
+      toast.warn("You already have an account with this Email!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   return (
@@ -131,15 +158,15 @@ const signup = () => {
                 >
                   Create an account
                 </button>
-                <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                <div className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Already have an account?{" "}
-                  <a
+                  <Link
                     href="/login"
                     className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                   >
                     Login here
-                  </a>
-                </p>
+                  </Link>
+                </div>
               </form>
             </div>
           </div>

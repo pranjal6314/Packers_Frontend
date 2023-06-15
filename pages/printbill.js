@@ -7,7 +7,7 @@ const PrintBill = () => {
   let componentRef = useRef();
   const router = useRouter();
   const { formData } = router.query;
-  console.log(formData);
+  //console.log(formData);
   const [data, setData] = useState(null);
   const [user, setUser] = useState({ value: null });
   const [key, setKey] = useState(0);
@@ -31,7 +31,7 @@ const PrintBill = () => {
       router.push("/");
     }
   }, [router.query, formData]);
-  console.log(data);
+  //console.log(data);
   const logout = () => {
     localStorage.removeItem("token");
     setUser({ value: null });
@@ -47,7 +47,7 @@ const PrintBill = () => {
       body: JSON.stringify(data),
     });
     let responce = await res.json();
-    console.log(responce);
+    //console.log(responce);
     setName(responce.name);
     setAddress(responce.address);
     setGstin(responce.gstin);
@@ -246,9 +246,15 @@ const PrintBill = () => {
 
       <div className="flex justify-center items-center mb-2">
         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
-          <FaPrint className="mr-2" />{" "}
+          {/* <FaPrint className="mr-2" />{" "} */}
           <ReactToPrint
-            trigger={() => <span>Print this out!</span>}
+            trigger={() => (
+              <span>
+                <button class="print-button">
+                  <span class="print-icon"></span>
+                </button>
+              </span>
+            )}
             content={() => componentRef}
           />
         </button>
